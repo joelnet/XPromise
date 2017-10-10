@@ -2,7 +2,7 @@
   "name": "x-promise",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "XPromise.js",
   "scripts": {
     "test": "jest"
   },
@@ -12,5 +12,9 @@
     "babel-core": "^6.26.0",
     "babel-jest": "^21.2.0",
     "jest": "^21.2.1"
+  },
+  "dependencies": {
+    "ramda-fantasy": "^0.8.0",
+    "redux": "^3.7.2"
   }
 }

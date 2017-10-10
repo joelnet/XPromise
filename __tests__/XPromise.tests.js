@@ -1,22 +1,18 @@
-// import XPromise from '../XPromise'
-
-// import XPromise from '..'
-
-const XPromise = Object.assign(
-  f => new Promise(f),
-  {
-    resolve: x => Promise.resolve(x),
-    reject: x => Promise.reject(x),
-  }
-)
+import XPromise from '../XPromise'
 
 describe('XPromise', () => {
   describe('XPromise', () => {
     test('resolves', () =>
       expect(XPromise(r => r('4641525453'))).resolves.toBe('4641525453'))
 
+    test('resolves with timeout', () =>
+      expect(XPromise(r => setTimeout(() => r('4641525453'), 100))).resolves.toBe('4641525453'))
+
     test('rejects', () =>
       expect(XPromise((_, r) => r('4641525453'))).rejects.toBe('4641525453'))
+
+    test('rejects with timeout', () =>
+      expect(XPromise((_, r) => setTimeout(() => r('4641525453'), 100))).rejects.toBe('4641525453'))
 
     test('resolves twice', () =>
       expect(XPromise(r => r('4641525453')).then(x => x)).resolves.toBe('4641525453'))
@@ -32,6 +28,16 @@ describe('XPromise', () => {
 
     test('reject does not resolve', () =>
       expect(XPromise((_, r) => r('4641525453')).then(() => { throw Error('BAD') })).rejects.toBe('4641525453'))
+
+    test('only resolves', () =>
+      XPromise((resolve, reject) => (resolve(123), reject(456)))
+        .then(x => expect(x).toBe(123))
+        .catch(x => { throw new Error('BAD') }))
+
+    test('only rejects', () =>
+      XPromise((resolve, reject) => (reject(123), resolve(456)))
+        .then(x => { throw new Error('BAD') })
+        .catch(x => expect(x).toBe(123)))
   })
 
   describe('XPromise.resolve', () => {

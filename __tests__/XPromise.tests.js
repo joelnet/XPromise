@@ -1,4 +1,23 @@
 import XPromise from '../XPromise'
+import promisesAplusTests from 'promises-aplus-tests'
+
+describe('Promises/A+ Tests', () => {
+  test('passes', (done) => {
+    const adapter = {
+      deferred() {
+        const deferred = {}
+        deferred.promise = XPromise((resolve, reject) => {
+          deferred.resolve = resolve
+          deferred.reject = reject
+        })
+        return deferred
+      }
+    }
+    promisesAplusTests(adapter, {bail: true}, () => {
+      done()
+    })
+  }, 1000000)
+})
 
 describe('XPromise', () => {
   describe('XPromise', () => {

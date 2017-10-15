@@ -1,4 +1,4 @@
-export default (({ U, tryCatch }) => U(XPromise => Object.assign(
+export default (({ U, tryCatch, immediate }) => U(XPromise => Object.assign(
   (action, state = { resolvers: [], rejectors: [] }) => (
     tryCatch(
       () =>
@@ -7,7 +7,7 @@ export default (({ U, tryCatch }) => U(XPromise => Object.assign(
             !state.left && !state.right &&
             (
               state.right = typeof state.then === 'function' ? state.then(value) : value,
-              state.resolvers.map(resolver => resolver(state.right)),
+              state.resolvers.map(resolver => immediate(() => resolver(state.right))),
               state.resolvers.splice(0)
             ),
           value =>
@@ -16,7 +16,7 @@ export default (({ U, tryCatch }) => U(XPromise => Object.assign(
               typeof state.catch === 'function'
                 ? state.right = state.catch(value)
                 : state.left = value,
-              state.rejectors.map(resolver => resolver(state.left)),
+              state.rejectors.map(resolver => immediate(() => resolver(state.left))),
               state.rejectors.splice(0)
             ),
         ),
@@ -60,4 +60,5 @@ export default (({ U, tryCatch }) => U(XPromise => Object.assign(
       catchfunc(err)
     }
   },
+  immediate: typeof setImmediate === 'function' ? setImmediate : fn => setTimeout(fn, 0)
 })

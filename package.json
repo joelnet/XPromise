@@ -11,10 +11,8 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-jest": "^21.2.0",
-    "jest": "^21.2.1"
-  },
-  "dependencies": {
-    "ramda-fantasy": "^0.8.0",
-    "redux": "^3.7.2"
+    "babel-preset-env": "^1.6.0",
+    "jest": "^21.2.1",
+    "promises-aplus-tests": "*"
   }
 }
